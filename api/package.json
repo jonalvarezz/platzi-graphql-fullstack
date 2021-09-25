@@ -1,0 +1,7 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "description": "Backend de nuestra aplicación con una API en GraphQL",
+  "main": "index.js",
+  "license": "MIT"
+}
