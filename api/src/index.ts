@@ -1,20 +1,10 @@
 import { ApolloServer } from 'apollo-server'
+import path from 'path'
+import { readFileSync } from 'fs'
+import resolvers from './resolvers'
 
-// 1
-const typeDefs = `
-  type Query {
-    info: String!
-  }
-`
+const typeDefs = readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8')
 
-// 2
-const resolvers = {
-  Query: {
-    info: () => `This is the API of a Hackernews Clone`,
-  },
-}
-
-// 3
 const server = new ApolloServer({
   typeDefs,
   resolvers,

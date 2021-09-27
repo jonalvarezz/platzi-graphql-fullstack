@@ -1,0 +1,20 @@
+type Query {
+  avos: [Avocado]!
+  avo(id: ID!): Avocado
+}
+
+type Attributes {
+  description: String
+  shape: String
+  hardiness: String
+  taste: String
+}
+
+type Avocado {
+  id: ID!
+  name: String!
+  sku: String!
+  price: Float!
+  image: String!
+  attributes: Attributes!
+}
