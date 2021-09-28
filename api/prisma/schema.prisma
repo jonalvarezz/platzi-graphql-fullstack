@@ -11,21 +11,24 @@ generator client {
 }
 
 model Attributes {
-  description   String?
-  shape         String?
-  hardiness     String?
-  taste         String?
+  id          Int      @id @default(autoincrement())
+  description String?
+  shape       String?
+  hardiness   String?
+  taste       String?
+  avocado     Avocado?
 }
 
 model Avocado {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime? @updatedAt
-  deletedAt     DateTime?
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
-  name          String
-  sku           String    @unique
-  price         Float
-  image         String
-  attributes    Attributes
+  name         String
+  sku          String     @unique
+  price        Float
+  image        String
+  attributes   Attributes @relation(fields: [attributesId], references: [id])
+  attributesId Int
 }
