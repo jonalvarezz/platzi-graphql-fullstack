@@ -1,3 +1,5 @@
+import { BaseModel } from '../base/base.model'
+
 export type Attributes = {
   description: string | null
   shape: string | null
@@ -5,7 +7,7 @@ export type Attributes = {
   taste: string | null
 }
 
-export type Avocado = {
+export type Avocado = BaseModel & {
   id: string
   name: string
   sku: string

@@ -1,6 +1,10 @@
+import { baseModelResolver } from '../base/base.resolver'
 import { Avocado } from './avocado.model'
 
 const avo: Avocado = {
+  createdAt: new Date(),
+  updatedAt: undefined,
+  deletedAt: undefined,
   name: 'Pinkerton Avocado',
   id: 'fpr72m9k',
   sku: 'B4HZ42TM',
@@ -24,9 +28,10 @@ export function findOne(id: string): Avocado | null {
 }
 
 export const resolver: Record<keyof Avocado, (parent: Avocado) => unknown> = {
+  ...baseModelResolver,
   id: (parent) => parent.id,
-  name: (parent) => parent.name,
   sku: (parent) => parent.sku,
+  name: (parent) => parent.name,
   price: (parent) => parent.price,
   image: (parent) => parent.image,
   attributes: (parent) => ({

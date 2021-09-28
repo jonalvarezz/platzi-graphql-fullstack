@@ -1,6 +1,15 @@
+scalar DateTime
+
 type Query {
   avos: [Avocado]!
   avo(id: ID!): Avocado
+}
+
+interface BaseModel {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
 }
 
 type Attributes {
@@ -10,8 +19,12 @@ type Attributes {
   taste: String
 }
 
-type Avocado {
+type Avocado implements BaseModel {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  deletedAt: DateTime
+
   name: String!
   sku: String!
   price: Float!
