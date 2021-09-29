@@ -7,5 +7,8 @@ export default {
     avo: avo.findOne,
     avos: avo.findAll,
   },
+  Mutation: {
+    createAvo: avo.createAvo,
+  },
   Avocado: avo.resolver,
 }

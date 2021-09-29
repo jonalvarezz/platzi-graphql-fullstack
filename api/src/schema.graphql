@@ -5,6 +5,10 @@ type Query {
   avo(id: ID!): Avocado
 }
 
+type Mutation {
+  createAvo(data: AvoCreateInput!): Avocado!
+}
+
 interface BaseModel {
   id: ID!
   createdAt: DateTime!
@@ -30,4 +34,14 @@ type Avocado implements BaseModel {
   price: Float!
   image: String!
   attributes: Attributes!
+}
+
+input AvoCreateInput {
+  name: String!
+  price: Float!
+  image: String!
+  description: String
+  shape: String
+  hardiness: String
+  taste: String
 }
