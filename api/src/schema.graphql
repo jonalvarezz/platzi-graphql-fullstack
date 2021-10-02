@@ -39,6 +39,7 @@ type Avocado implements BaseModel {
 input AvoCreateInput {
   name: String!
   price: Float!
+  sku: String!
   image: String!
   description: String
   shape: String
