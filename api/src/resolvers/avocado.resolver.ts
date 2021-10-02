@@ -13,11 +13,13 @@ export async function findAll(
 
 export async function findOne(
   parent: ResolverParent,
-  args: { id: number },
+  args: { id: string },
   context: ResolverContext
 ): Promise<Avocado | null> {
   return context.orm.avocado.findUnique({
-    where: args,
+    where: {
+      id: parseInt(args.id, 10),
+    },
     include: {
       attributes: true,
     },
