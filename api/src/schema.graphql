@@ -1,7 +1,7 @@
 scalar DateTime
 
 type Query {
-  avos: [Avocado]!
+  avos(skip: Int, take: Int, where: AvoWhereInput): [Avocado]!
   avo(id: ID!): Avocado
 }
 
@@ -45,4 +45,23 @@ input AvoCreateInput {
   shape: String
   hardiness: String
   taste: String
+}
+
+input AvoWhereInput {
+  name: StringFilterInput
+  price: Float
+}
+
+input StringFilterInput {
+  equals: String
+  in: [String]
+  notIn: [String]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
 }
