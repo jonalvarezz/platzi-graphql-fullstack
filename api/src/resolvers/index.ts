@@ -1,5 +1,5 @@
-import * as avo from './modules/avocado/avocado.resolver'
-import * as scalars from './modules/base/scalars.model'
+import * as avo from './avocado.resolver'
+import * as scalars from './scalars'
 
 export default {
   ...scalars,
