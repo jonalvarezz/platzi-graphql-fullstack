@@ -32,3 +32,10 @@ model Attributes {
   avocado     Avocado @relation(fields: [avocadoId], references: [id])
   avocadoId   Int
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
