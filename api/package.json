@@ -19,10 +19,12 @@
     "graphql": "^15.6.1",
     "jose": "^4.3.7",
     "nodemon": "^2.0.13",
+    "prompt": "^1.2.0",
     "ts-node": "^10.2.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/prompt": "^1.1.1",
     "prisma": "^3.1.1"
   }
 }
