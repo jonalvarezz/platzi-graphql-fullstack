@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-express'
+import { ApolloServer, AuthenticationError } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import http from 'http'
 import path from 'path'
@@ -18,7 +18,9 @@ const orm = new PrismaClient()
     typeDefs,
     resolvers,
     context: ({ req }) => {
-      console.log('req user: ', req.user)
+      if (req.user == undefined) {
+        throw new AuthenticationError('Unauthenticated request')
+      }
 
       return { orm, user: req.user }
     },
