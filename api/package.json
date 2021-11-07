@@ -9,11 +9,6 @@
     "dev": "yarn start",
     "test": "jest src"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
-  },
   "dependencies": {
     "@prisma/client": "^3.1.1",
     "apollo-server-core": "^3.3.0",
@@ -30,15 +25,14 @@
     "ts-node": "^10.2.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.0",
     "@types/bcrypt": "^5.0.0",
     "@types/express-session": "^1.17.4",
     "@types/jest": "^27.0.x",
     "@types/passport": "^1.0.7",
     "@types/passport-local": "^1.0.34",
     "@types/prompt": "^1.1.1",
-    "babel-jest": "^27.3.1",
     "jest": "^27.0.x",
-    "prisma": "^3.1.1"
+    "prisma": "^3.1.1",
+    "ts-jest": "^27.0.7"
   }
 }
