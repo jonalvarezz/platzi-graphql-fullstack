@@ -2,8 +2,8 @@ import { AuthenticationError } from 'apollo-server-express'
 import type { PrismaClient, Avocado, Attributes, Prisma } from '@prisma/client'
 import type { User } from '@prisma/client'
 
-type ResolverParent = unknown
-type ResolverContext = { orm: PrismaClient; user: User | undefined }
+export type ResolverParent = unknown
+export type ResolverContext = { orm: PrismaClient; user: User | undefined }
 
 export async function findAll(
   parent: ResolverParent,
