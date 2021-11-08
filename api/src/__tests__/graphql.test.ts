@@ -1,7 +1,7 @@
 import { PrismaClient, User, Avocado } from '@prisma/client'
 import { mockDeep } from 'jest-mock-extended'
 import { DeepMockProxy } from 'jest-mock-extended'
-import { ResolverContext, findOne } from './avocado.resolver'
+import { ResolverContext, findOne } from '../resolvers/avocado.resolver'
 
 export type MockResolverContext = {
   orm: DeepMockProxy<PrismaClient>
