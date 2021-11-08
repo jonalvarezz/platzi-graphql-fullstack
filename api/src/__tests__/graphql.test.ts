@@ -100,3 +100,120 @@ test('should filter a list of avos', async () => {
     skip: 1,
   })
 })
+
+test('should return a single avo', async () => {
+  mockContext.orm.avocado.findUnique.mockResolvedValue(mockAvocadoDB[0])
+
+  const query = gql`
+    {
+      avo(id: 1) {
+        id
+        name
+      }
+    }
+  `
+
+  const result = await tester.graphql(query, undefined, context)
+  expect(result.data).toEqual({
+    avo: {
+      id: '1',
+      name: 'Reed Avocado',
+    },
+  })
+  expect(mockContext.orm.avocado.findUnique).toHaveBeenCalledTimes(1)
+  expect(mockContext.orm.avocado.findUnique).toHaveBeenCalledWith({
+    include: { attributes: true },
+    where: { id: 1 },
+  })
+})
+
+describe('mutation: createAvo', () => {
+  const createAvoData = {
+    data: {
+      name: 'Lamb Hass Avocado',
+      sku: 'N55229ZA',
+      price: 1.34,
+      image: '/images/lamb.jpg',
+      description:
+        'The Lamb Hass avocado is a cross between a Hass and Gwen avocado. The fruits are larger in size and later maturing than Hass. It is gaining in popularity as a commercial and backyard variety due to its exceptional flavor and easy peeling qualities. The tree has an upright, compact habit.',
+      shape: 'Obovate',
+      hardiness: '-2 °C',
+      taste: 'Great, is an avocado',
+    },
+  }
+
+  test('should fail if input data is incomplete', async () => {
+    const query = gql`
+      mutation AddAvo($data: AvoCreateInput!) {
+        createAvo(data: $data) {
+          id
+          name
+        }
+      }
+    `
+    const result = await tester.graphql(query, undefined, context, {
+      data: { name: 'Incomplete' },
+    })
+
+    expect(result).not.toHaveProperty('data')
+    expect(result).toHaveProperty(['errors', 0, 'message'])
+    expect(result.errors[0].message).toContain(
+      'Field "price" of required type "Float!" was not provided' // second field missing
+    )
+  })
+
+  test('should fail if not authenticated', async () => {
+    const query = gql`
+      mutation AddAvo($data: AvoCreateInput!) {
+        createAvo(data: $data) {
+          id
+          name
+        }
+      }
+    `
+    const result = await tester.graphql(
+      query,
+      undefined,
+      { ...context, user: undefined },
+      createAvoData
+    )
+    expect(result.data).toBeNull()
+    expect(result).toHaveProperty(['errors', 0, 'message'])
+    expect(result.errors[0].message).toContain('Unauthenticated request')
+  })
+
+  test('should work if input data is complete and user is authenticated', async () => {
+    mockContext.orm.avocado.create.mockResolvedValue({
+      ...mockAvocadoDB[0],
+      id: 3,
+      name: createAvoData.data.name,
+      sku: createAvoData.data.sku,
+    })
+
+    const query = gql`
+      mutation AddAvo($data: AvoCreateInput!) {
+        createAvo(data: $data) {
+          id
+          name
+        }
+      }
+    `
+    const result = await tester.graphql(
+      query,
+      undefined,
+      { ...context, user: { id: 1, username: 'jonalvarezz' } },
+      createAvoData
+    )
+
+    expect(result).not.toHaveProperty('errors')
+    expect(result).toHaveProperty('data')
+    expect(result).toEqual({
+      data: {
+        createAvo: {
+          id: '3',
+          name: 'Lamb Hass Avocado',
+        },
+      },
+    })
+  })
+})
