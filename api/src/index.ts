@@ -12,7 +12,9 @@ const httpServer = http.createServer(app)
 const typeDefs = readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8')
 const orm = new PrismaClient()
 
-!(async function () {
+const port = process.env.PORT || 4000
+
+export default async function start() {
   // Same ApolloServer initialization as before, plus the drain plugin.
   const server = new ApolloServer({
     typeDefs,
@@ -33,8 +35,6 @@ const orm = new PrismaClient()
   })
 
   // Modified server startup
-  await new Promise<void>((resolve) =>
-    httpServer.listen({ port: 4000 }, resolve)
-  )
+  await new Promise<void>((resolve) => httpServer.listen({ port }, resolve))
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-})()
+}

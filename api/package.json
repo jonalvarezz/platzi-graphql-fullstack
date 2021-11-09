@@ -5,9 +5,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "dev": "yarn start",
-    "test": "jest src"
+    "build": "prisma generate && yarn clean && tsc --build && yarn copyfiles",
+    "start": "node ../dist/api",
+    "dev": "nodemon index.ts",
+    "test": "jest src",
+    "clean": "rimraf ../dist/api",
+    "copyfiles": "copyfiles src/schema.graphql public/* ../dist/api"
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
@@ -27,11 +30,13 @@
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^27.0.x",
     "@types/prompt": "^1.1.1",
+    "copyfiles": "^2.4.1",
     "easygraphql-tester": "^6.0.1",
     "graphql-tag": "^2.12.6",
     "jest": "^27.0.x",
     "jest-mock-extended": "^2.0.4",
     "prisma": "^3.1.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7"
   }
 }
