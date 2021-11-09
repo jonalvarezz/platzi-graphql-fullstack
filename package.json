@@ -3,6 +3,9 @@
   "name": "platzi-graphql-fullstack",
   "version": "0.1.0",
   "description": "Saga de GraphQL Fullstack de Platzi",
+  "engines": {
+    "node": "14.x"
+  },
   "workspaces": [
     "api",
     "client",
