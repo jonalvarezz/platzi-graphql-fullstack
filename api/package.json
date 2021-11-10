@@ -9,8 +9,8 @@
     "start": "node ../dist/api",
     "dev": "nodemon src/index.ts",
     "test": "jest src",
-    "clean": "rm -rf ../dist/api",
-    "copy-files": "cp ./src/schema.graphql ../dist/api"
+    "clean": "rimraf ../dist/api",
+    "copy-files": "copyfiles -u 1 ./src/schema.graphql ../dist/api"
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
@@ -34,11 +34,13 @@
     "@types/passport": "^1.0.7",
     "@types/passport-local": "^1.0.34",
     "@types/prompt": "^1.1.1",
+    "copyfiles": "^2.4.1",
     "easygraphql-tester": "^6.0.1",
     "graphql-tag": "^2.12.6",
     "jest": "^27.0.x",
     "jest-mock-extended": "^2.0.4",
     "prisma": "^3.1.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7"
   }
 }
