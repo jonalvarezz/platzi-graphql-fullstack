@@ -11,7 +11,9 @@
     "client",
     "packages/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "build": "yarn workspaces run build"
+  },
   "author": "@jonalvarezz",
   "license": "MIT",
   "prettier": {
