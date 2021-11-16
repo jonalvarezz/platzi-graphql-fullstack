@@ -21,6 +21,7 @@ export default async function start() {
     resolvers,
     context: ({ req }) => ({ orm, user: req.user }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    introspection: true,
   })
 
   // More required logic for integrating with Express
