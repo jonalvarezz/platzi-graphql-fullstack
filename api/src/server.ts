@@ -4,8 +4,14 @@ import cors from 'cors'
 import { urlencoded, json } from 'body-parser'
 
 import auth, { login, currentUser } from './auth'
+import { favicon } from './favicon'
 
 export const app = express()
+
+app.get('/favicon.ico', favicon)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../views/index.html'))
+})
 
 // Middlewares
 app.use(cors())
