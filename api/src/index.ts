@@ -14,7 +14,7 @@ const orm = new PrismaClient()
 
 const port = process.env.PORT || 4000
 
-!(async function () {
+export default async function start() {
   // Same ApolloServer initialization as before, plus the drain plugin.
   const server = new ApolloServer({
     typeDefs,
@@ -37,4 +37,4 @@ const port = process.env.PORT || 4000
   // Modified server startup
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve))
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-})()
+}
