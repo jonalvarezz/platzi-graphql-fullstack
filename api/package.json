@@ -5,12 +5,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn clean && tsc --build && yarn copy-files",
+    "build": "prisma generate && yarn clean && tsc --build && yarn copyfiles",
     "start": "node ../dist/api",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon index.ts",
     "test": "jest src",
     "clean": "rimraf ../dist/api",
-    "copy-files": "copyfiles -u 1 ./src/schema.graphql ../dist/api"
+    "copyfiles": "copyfiles src/schema.graphql public/* ../dist/api"
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",

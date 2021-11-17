@@ -4,8 +4,7 @@
     "lib": ["ES2020"],
     "module": "commonjs",
     "target": "ES2020",
-    "outDir": "../dist/api",
-    "rootDir": "./src",
+    "outDir": "../dist",
     "types": ["node", "jest"]
   },
   "exclude": ["**/*.spec.ts"],
