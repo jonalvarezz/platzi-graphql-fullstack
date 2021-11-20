@@ -1,0 +1,9 @@
+overwrite: true
+schema: 'https://platzi-graphql.herokuapp.com/graphql'
+documents: './queries.graphql'
+generates:
+  generated/graphql.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
