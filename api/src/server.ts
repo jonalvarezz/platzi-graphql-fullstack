@@ -44,7 +44,7 @@ app.post('/logout', logout, (req, res) => {
 app.get(
   '/user',
   // Required: limit credentials to this origin only
-  cors({ origin: process.env.SITE_URL, credentials: true }),
+  cors({ credentials: true }),
   getUserDetail
 )
 
