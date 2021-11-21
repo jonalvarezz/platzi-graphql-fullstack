@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 
 // Middlewares
 app.use('/static', express.static(path.join(__dirname, '../public')))
+app.set('trust proxy', 1)
 app.use(
   session({
     secret: 'nunca-pares-de-aprender',
