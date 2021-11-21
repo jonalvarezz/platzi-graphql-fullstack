@@ -19,10 +19,14 @@ app.use(
 app.use(urlencoded({ extended: false }))
 app.use(auth.initialize())
 app.use(auth.session())
+
+// Auth Routes
 app.post('/login', login, (req, res) => {
+  // end if no redirect is specified
   res.status(201).end()
 })
 app.post('/logout', logout, (req, res) => {
+  // end if no redirect is specified
   res.status(202).end()
 })
 
