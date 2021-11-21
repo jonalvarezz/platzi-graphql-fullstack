@@ -20,7 +20,11 @@ app.use(
   session({
     secret: 'nunca-pares-de-aprender',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    cookie: {
+      secure: 'auto',
+      sameSite: 'none',
+    },
   })
 )
 app.use(urlencoded({ extended: false }))
