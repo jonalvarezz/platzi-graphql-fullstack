@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -6,8 +7,27 @@ import { useGetAllQuery } from '../generated/graphql'
 
 const Home: NextPage = () => {
   const response = useGetAllQuery()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   console.log(response.data?.avos[0]?.name)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch('http://localhost:4000/user', {
+        credentials: 'include',
+      })
+      const user = await response.json()
+      if (!user) {
+        console.log('User is not logged in')
+        return
+      }
+      setIsLoggedIn(true)
+      console.log('User is logged in')
+      console.log(user)
+    }
+
+    getUser()
+  }, [])
 
   return (
     <div className={styles.container}>
@@ -21,6 +41,21 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <div>
+          {isLoggedIn ? (
+            <form action="http://localhost:4000/logout" method="POST">
+              <input
+                type="hidden"
+                name="redirect"
+                value="http://localhost:3000/"
+              />
+              <button type="submit">Logout</button>
+            </form>
+          ) : (
+            <a href="/login">Login</a>
+          )}
+        </div>
 
         <p className={styles.description}>
           Get started by editing{' '}
