@@ -2,8 +2,13 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { useGetAllQuery } from '../generated/graphql'
 
 const Home: NextPage = () => {
+  const response = useGetAllQuery()
+
+  console.log(response.data?.avos[0]?.name)
+
   return (
     <div className={styles.container}>
       <Head>
