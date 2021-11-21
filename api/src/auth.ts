@@ -103,8 +103,21 @@ export function logout(req: Request, res: Response, next: NextFunction) {
   if (hasRedirect) {
     res.redirect(redirect!)
   } else {
-  next()
+    next()
   }
+}
+
+export function getUserDetail(req: Request, res: Response) {
+  let user = null
+  if (req.user) {
+    const { id, username } = req.user
+    user = {
+      id,
+      username,
+    }
+  }
+
+  res.json(user)
 }
 
 export default passport

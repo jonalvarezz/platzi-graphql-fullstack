@@ -1,9 +1,10 @@
 import express from 'express'
 import path from 'path'
+import cors from 'cors'
 import session from 'express-session'
 import { urlencoded } from 'body-parser'
 
-import auth, { login, logout } from './auth'
+import auth, { login, logout, getUserDetail } from './auth'
 
 export const app = express()
 
@@ -29,5 +30,11 @@ app.post('/logout', logout, (req, res) => {
   // end if no redirect is specified
   res.status(202).end()
 })
+app.get(
+  '/user',
+  // Required: limit credentials to this origin only
+  cors({ origin: process.env.SITE_URL, credentials: true }),
+  getUserDetail
+)
 
 export default app
