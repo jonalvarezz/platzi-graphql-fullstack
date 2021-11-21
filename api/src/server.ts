@@ -18,7 +18,14 @@ app.get('/', (req, res) => {
 app.use('/static', express.static(path.join(__dirname, '../public')))
 // Set HTTP cookies with CORS
 app.set('trust proxy', 1)
-app.use(cors({ origin: process.env.SITE_URL, credentials: true }))
+app.use(
+  cors({
+    credentials: true,
+    origin: (origin, cb) => {
+      cb(null, origin || '*')
+    },
+  })
+)
 app.use(
   session({
     secret: 'nunca-pares-de-aprender',
