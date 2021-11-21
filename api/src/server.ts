@@ -9,6 +9,8 @@ import { favicon } from './favicon'
 
 export const app = express()
 
+const SITE_URL = process.env.SITE_URL
+
 app.get('/favicon.ico', favicon)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../views/index.html'))
@@ -32,6 +34,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
+      domain: 'platzi-graphql-fullstack.vercel.app',
       secure: 'auto',
       sameSite: 'none',
     },
