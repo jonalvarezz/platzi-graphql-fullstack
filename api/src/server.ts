@@ -16,7 +16,9 @@ app.get('/', (req, res) => {
 
 // Middlewares
 app.use('/static', express.static(path.join(__dirname, '../public')))
+// Set HTTP cookies with CORS
 app.set('trust proxy', 1)
+app.use(cors({ origin: process.env.SITE_URL, credentials: true }))
 app.use(
   session({
     secret: 'nunca-pares-de-aprender',
@@ -41,11 +43,6 @@ app.post('/logout', logout, (req, res) => {
   // end if no redirect is specified
   res.status(202).end()
 })
-app.get(
-  '/user',
-  // Required: limit credentials to this origin only
-  cors({ credentials: true }),
-  getUserDetail
-)
+app.get('/user', getUserDetail)
 
 export default app
