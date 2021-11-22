@@ -1,123 +1,107 @@
-import passport from 'passport'
-import { Strategy as LocalAuth } from 'passport-local'
-import type { VerifyFunction } from 'passport-local'
-import type { Response, Request, NextFunction, RequestHandler } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { compare } from 'bcrypt'
+import { TextEncoder } from 'util'
+import { SignJWT, jwtVerify } from 'jose'
 
 declare global {
   namespace Express {
     interface User {
       id: number
-      username: string
+    }
+    interface Request {
+      user?: Express.User
     }
   }
 }
+
+interface UserJwtPayload {
+  id: number // The user Id
+  iat: number // Issued at
+  exp: number // Expire time
+}
+
+const JWT_SECRET_KEY = 'nunca pares de aprender 3'
 
 const orm = new PrismaClient()
-
-const verify: VerifyFunction = async (username, password, done) => {
-  try {
-    const user = await orm.user.findUnique({ where: { username: username } })
-
-    if (!user) {
-      return done(null, false, { message: 'Wrong credentials' })
-    }
-
-    const isValid = await compare(password, user.password)
-
-    if (!isValid) {
-      return done(null, false, { message: 'Wrong credentials' })
-    }
-
-    return done(null, user)
-  } catch (err) {
-    return done(err)
-  }
-}
-
-passport.use(new LocalAuth(verify))
-
-passport.serializeUser((user, done) => {
-  done(null, user.id)
-})
-
-passport.deserializeUser(async function (userId, done) {
-  try {
-    const user = await orm.user.findUnique({
-      where: { id: parseInt(String(userId), 10) },
-    })
-
-    if (!user) {
-      return done(null, false)
-    }
-
-    const { id, username } = user
-
-    done(null, { id, username })
-  } catch (err) {
-    done(err)
-  }
-})
-
-const getRedirect = (req: Request) => {
-  const redirect = req.body.redirect as string | undefined
-
-  return {
-    redirect,
-    hasRedirect: typeof redirect === 'string',
-  }
-}
 
 /**
  * Login with redirect support.
  *
  * The response will be redirected to the given `redirect` value if any.
  */
-export const login: RequestHandler = (req, res, next) => {
-  const { redirect, hasRedirect } = getRedirect(req)
+export const login: RequestHandler = async (req, res, next) => {
+  const { username, password } = req.body
 
-  const options = hasRedirect
-    ? {
-        successRedirect: redirect,
-        failureRedirect: `${redirect}/login?_error=${encodeURI(
-          'Wrong credentials'
-        )}`,
-      }
-    : {}
+  try {
+    const user = await orm.user.findUnique({ where: { username: username } })
 
-  const auth = passport.authenticate('local', options)
+    if (!user) {
+      throw new Error()
+    }
 
-  return auth(req, res, next)
+    const isValid = await compare(password, user.password)
+
+    if (!isValid) {
+      throw new Error()
+    }
+
+    const token = await new SignJWT({ id: user.id })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime('2h')
+      .sign(new TextEncoder().encode(JWT_SECRET_KEY))
+
+    res.json({ token, username: user.username, id: user.id })
+  } catch (err) {
+    res.sendStatus(401)
+  }
 }
 
-/**
- * Logout with redirect support.
- *
- * The response will be redirected to the given `redirect` value if any.
- */
-export function logout(req: Request, res: Response, next: NextFunction) {
-  req.logout()
-  const { redirect, hasRedirect } = getRedirect(req)
+export const verifyToken = async (req: Request) => {
+  const { authorization } = req.headers
+  const token = (authorization || '').replace('Bearer ', '')
 
-  if (hasRedirect) {
-    res.redirect(redirect!)
-  } else {
+  try {
+    const verified = await jwtVerify(
+      token,
+      new TextEncoder().encode(JWT_SECRET_KEY)
+    )
+
+    return verified.payload as unknown as UserJwtPayload
+  } catch (e) {
+    throw new Error('Invalid token')
+  }
+}
+
+const authMiddleware: RequestHandler = async (req, res, next) => {
+  try {
+    const payload = await verifyToken(req)
+    req.user = { id: payload.id }
+  } catch (e) {
+    // ignore
+  } finally {
     next()
   }
 }
 
-export function getUserDetail(req: Request, res: Response) {
-  let user = null
-  if (req.user) {
-    const { id, username } = req.user
-    user = {
-      id,
-      username,
+export default authMiddleware
+
+export const currentUser: RequestHandler = async (req, res) => {
+  try {
+    const userDetails = await orm.user.findUnique({
+      where: { id: req.user?.id },
+    })
+
+    if (!userDetails) {
+      throw new Error()
     }
+
+    res.json({
+      id: userDetails.id,
+      username: userDetails.username,
+    })
+  } catch (e) {
+    res.sendStatus(401)
   }
-
-  res.json(user)
 }
-
-export default passport
