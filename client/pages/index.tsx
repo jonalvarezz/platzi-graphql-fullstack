@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -13,9 +14,17 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch('http://localhost:4000/user', {
-        credentials: 'include',
-      })
+      const token = sessionStorage.getItem('token')
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVICE_URL}/api/user/current`,
+        {
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       const user = await response.json()
       if (!user) {
         console.log('User is not logged in')
@@ -44,16 +53,11 @@ const Home: NextPage = () => {
 
         <div>
           {isLoggedIn ? (
-            <form action="http://localhost:4000/logout" method="POST">
-              <input
-                type="hidden"
-                name="redirect"
-                value="http://localhost:3000/"
-              />
-              <button type="submit">Logout</button>
-            </form>
+            <button type="submit">Logout</button>
           ) : (
-            <a href="/login">Login</a>
+            <Link href="/login">
+              <a>Login</a>
+            </Link>
           )}
         </div>
 

@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 
 const client = new ApolloClient({
-  uri: 'https://platzi-graphql.herokuapp.com/graphql',
+  uri: `${process.env.NEXT_PUBLIC_SERVICE_URL}/graphql`,
   cache: new InMemoryCache(),
 })
 
