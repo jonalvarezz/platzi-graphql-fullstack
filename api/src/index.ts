@@ -17,8 +17,10 @@ const orm = new PrismaClient()
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: {
-      orm,
+    context: ({ req }) => {
+      console.log('req user: ', req.user)
+
+      return { orm, user: req.user }
     },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   })
