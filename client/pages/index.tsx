@@ -1,9 +1,58 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'
 
+const query = `
+  query {
+    avos {
+      id
+      image
+      name
+      createdAt
+      sku
+      price
+      attributes {
+        description
+        taste
+        shape
+        hardiness
+      }
+    }
+  }
+`
+
 const HomePage = () => {
+  const [items, setItems] = useState<TProduct[]>([])
+
+  console.log(items)
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVICE_URL}/graphql`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query,
+            }),
+          }
+        )
+
+        const { data } = (await response.json()) as { data: TProduct[] }
+        setItems(data)
+      } catch (e) {
+        console.log('Something went wrong', e)
+      }
+    }
+
+    fetchItems()
+  }, [])
+
   return (
     <Layout title="Home">
       <KawaiiHeader />
