@@ -1,8 +1,15 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppProps } from 'next/app'
+import 'semantic-ui-css/semantic.min.css'
+import '../globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import CartProvider from '@store/Cart'
+
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  return (
+    <CartProvider>
+      <Component {...pageProps} />
+    </CartProvider>
+  )
 }
 
 export default MyApp
