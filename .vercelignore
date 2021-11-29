@@ -1,0 +1,2 @@
+# Ignore our api folder since it has a special meaning on Vercel
+api
