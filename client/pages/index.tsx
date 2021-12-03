@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { useQuery } from 'react-query'
+import { useState } from 'react'
+import { useQuery, gql } from '@apollo/client'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'
@@ -10,70 +10,44 @@ const avocadoFragment = `
   name
   createdAt
   sku
-  price
-  attributes {
-    description
-    taste
-    shape
-    hardiness
-  }
 `
 
-// Esto va generalmente en una carpeta llamada api o service
-const baseUrl = process.env.NEXT_PUBLIC_SERVICE_URL || 'http://localhost:4000'
-
-const requester = axios.create({
-  baseURL: baseUrl,
-  headers: { 'Content-Type': 'application/json' },
-})
-
 const useAvocados = () => {
-  const query = `
-    query {
+  const query = gql`
+    query GetAllAvos {
       avos {
         ${avocadoFragment}
       }
     }
   `
-  return useQuery('avocados', async () => {
-    const response = await requester.post<{ data: { avos: TProduct[] } }>(
-      '/graphql',
-      {
-        query,
-      }
-    )
-    return response.data.data
-  })
+  return useQuery(query)
 }
 
 const useAvocado = (id: number | string) => {
-  const query = `
-  query {
-      avo(id: ${id}) {
+  const query = gql`
+  query GetAvo($avoId: ID!) {
+      avo(id: $avoId) {
         ${avocadoFragment}
       }
     }
   `
 
-  return useQuery(['avocado', id], async () => {
-    const response = await requester.post<{ data: { avo: TProduct } }>(
-      '/graphql',
-      {
-        query,
-      }
-    )
-    return response.data.data
-  })
+  return useQuery(query, { variables: { avoId: id } })
 }
 
 const HomePage = () => {
-  const { data, status } = useAvocado(1)
+  const [isEnabled, setIsEnabled] = useState(false)
+  const { data, loading } = useAvocados()
 
-  console.log({ data, status })
+  console.log({ data, loading })
 
   return (
     <Layout title="Home">
       <KawaiiHeader />
+      <div style={{ margin: '2rem 0' }}>
+        <button onClick={() => setIsEnabled(true)}>Fetch child</button>
+        {isEnabled && <ChildComponent />}
+      </div>
       <Card.Group itemsPerRow={2} centered>
         {documentationList.map((doc) => (
           <Card
@@ -87,6 +61,13 @@ const HomePage = () => {
       </Card.Group>
     </Layout>
   )
+}
+
+function ChildComponent() {
+  const { data, loading } = useAvocado(1)
+  console.log('Single avocado: ', { data, loading })
+
+  return <p>Mounted</p>
 }
 
 const documentationList = [
