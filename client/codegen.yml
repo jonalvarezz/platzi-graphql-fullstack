@@ -6,4 +6,7 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'typescript-react-apollo'
+      - 'typed-document-node'
+    config:
+      avoidOptionals: true
+      maybeValue: 'T | null'

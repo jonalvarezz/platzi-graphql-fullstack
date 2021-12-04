@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import { useQuery } from '@apollo/client'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'
-import { useGetAllAvocadosQuery, useGetAvocadoQuery } from '@service/graphql'
+import { GetAllAvocadosDocument, GetAvocadoDocument } from '@service/graphql'
 
 const HomePage = () => {
   const [isEnabled, setIsEnabled] = useState(false)
-  const { data, loading } = useGetAllAvocadosQuery()
+  const { data, loading } = useQuery(GetAllAvocadosDocument)
 
   console.log({ data, loading })
 
@@ -33,7 +34,9 @@ const HomePage = () => {
 }
 
 function ChildComponent() {
-  const { data, loading } = useGetAvocadoQuery({ variables: { avoId: '2' } })
+  const { data, loading } = useQuery(GetAvocadoDocument, {
+    variables: { avoId: '2' },
+  })
   console.log('Single avocado: ', { data, loading })
 
   return <p>Mounted</p>
