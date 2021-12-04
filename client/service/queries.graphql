@@ -1,0 +1,16 @@
+query GetAllAvocados {
+  avos {
+    id
+    image
+    name
+    createdAt
+    sku
+    price
+    attributes {
+      description
+      taste
+      shape
+      hardiness
+    }
+  }
+}

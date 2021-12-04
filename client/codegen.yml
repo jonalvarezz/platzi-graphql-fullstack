@@ -1,0 +1,9 @@
+overwrite: true
+schema: '${NEXT_PUBLIC_SERVICE_URL}/graphql'
+documents: './service/queries.graphql'
+generates:
+  service/graphql.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
