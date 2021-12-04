@@ -103,30 +103,43 @@ export type StringFilterInput = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
+export type AvocadoFragment = { __typename?: 'Avocado', id: string, image: string, name: string, createdAt: any, sku: string, price: number, attributes: { __typename?: 'Attributes', description?: string | null | undefined, taste?: string | null | undefined, shape?: string | null | undefined, hardiness?: string | null | undefined } };
+
 export type GetAllAvocadosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllAvocadosQuery = { __typename?: 'Query', avos: Array<{ __typename?: 'Avocado', id: string, image: string, name: string, createdAt: any, sku: string, price: number, attributes: { __typename?: 'Attributes', description?: string | null | undefined, taste?: string | null | undefined, shape?: string | null | undefined, hardiness?: string | null | undefined } } | null | undefined> };
 
+export type GetAvocadoQueryVariables = Exact<{
+  avoId: Scalars['ID'];
+}>;
 
-export const GetAllAvocadosDocument = gql`
-    query GetAllAvocados {
-  avos {
-    id
-    image
-    name
-    createdAt
-    sku
-    price
-    attributes {
-      description
-      taste
-      shape
-      hardiness
-    }
+
+export type GetAvocadoQuery = { __typename?: 'Query', avo?: { __typename?: 'Avocado', id: string, image: string, name: string, createdAt: any, sku: string, price: number, attributes: { __typename?: 'Attributes', description?: string | null | undefined, taste?: string | null | undefined, shape?: string | null | undefined, hardiness?: string | null | undefined } } | null | undefined };
+
+export const AvocadoFragmentDoc = gql`
+    fragment Avocado on Avocado {
+  id
+  image
+  name
+  createdAt
+  sku
+  price
+  attributes {
+    description
+    taste
+    shape
+    hardiness
   }
 }
     `;
+export const GetAllAvocadosDocument = gql`
+    query GetAllAvocados {
+  avos {
+    ...Avocado
+  }
+}
+    ${AvocadoFragmentDoc}`;
 
 /**
  * __useGetAllAvocadosQuery__
@@ -154,3 +167,38 @@ export function useGetAllAvocadosLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetAllAvocadosQueryHookResult = ReturnType<typeof useGetAllAvocadosQuery>;
 export type GetAllAvocadosLazyQueryHookResult = ReturnType<typeof useGetAllAvocadosLazyQuery>;
 export type GetAllAvocadosQueryResult = Apollo.QueryResult<GetAllAvocadosQuery, GetAllAvocadosQueryVariables>;
+export const GetAvocadoDocument = gql`
+    query GetAvocado($avoId: ID!) {
+  avo(id: $avoId) {
+    ...Avocado
+  }
+}
+    ${AvocadoFragmentDoc}`;
+
+/**
+ * __useGetAvocadoQuery__
+ *
+ * To run a query within a React component, call `useGetAvocadoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAvocadoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAvocadoQuery({
+ *   variables: {
+ *      avoId: // value for 'avoId'
+ *   },
+ * });
+ */
+export function useGetAvocadoQuery(baseOptions: Apollo.QueryHookOptions<GetAvocadoQuery, GetAvocadoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAvocadoQuery, GetAvocadoQueryVariables>(GetAvocadoDocument, options);
+      }
+export function useGetAvocadoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAvocadoQuery, GetAvocadoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAvocadoQuery, GetAvocadoQueryVariables>(GetAvocadoDocument, options);
+        }
+export type GetAvocadoQueryHookResult = ReturnType<typeof useGetAvocadoQuery>;
+export type GetAvocadoLazyQueryHookResult = ReturnType<typeof useGetAvocadoLazyQuery>;
+export type GetAvocadoQueryResult = Apollo.QueryResult<GetAvocadoQuery, GetAvocadoQueryVariables>;

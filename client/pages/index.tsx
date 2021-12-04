@@ -1,43 +1,12 @@
 import { useState } from 'react'
-import { useQuery, gql } from '@apollo/client'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'
-
-const avocadoFragment = `
-  id
-  image
-  name
-  createdAt
-  sku
-`
-
-const useAvocados = () => {
-  const query = gql`
-    query GetAllAvos {
-      avos {
-        ${avocadoFragment}
-      }
-    }
-  `
-  return useQuery(query)
-}
-
-const useAvocado = (id: number | string) => {
-  const query = gql`
-  query GetAvo($avoId: ID!) {
-      avo(id: $avoId) {
-        ${avocadoFragment}
-      }
-    }
-  `
-
-  return useQuery(query, { variables: { avoId: id } })
-}
+import { useGetAllAvocadosQuery, useGetAvocadoQuery } from '@service/graphql'
 
 const HomePage = () => {
   const [isEnabled, setIsEnabled] = useState(false)
-  const { data, loading } = useAvocados()
+  const { data, loading } = useGetAllAvocadosQuery()
 
   console.log({ data, loading })
 
@@ -64,7 +33,7 @@ const HomePage = () => {
 }
 
 function ChildComponent() {
-  const { data, loading } = useAvocado(1)
+  const { data, loading } = useGetAvocadoQuery({ variables: { avoId: '2' } })
   console.log('Single avocado: ', { data, loading })
 
   return <p>Mounted</p>

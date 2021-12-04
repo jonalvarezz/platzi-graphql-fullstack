@@ -1,16 +1,26 @@
+fragment Avocado on Avocado {
+  id
+  image
+  name
+  createdAt
+  sku
+  price
+  attributes {
+    description
+    taste
+    shape
+    hardiness
+  }
+}
+
 query GetAllAvocados {
   avos {
-    id
-    image
-    name
-    createdAt
-    sku
-    price
-    attributes {
-      description
-      taste
-      shape
-      hardiness
-    }
+    ...Avocado
+  }
+}
+
+query GetAvocado($avoId: ID!) {
+  avo(id: $avoId) {
+    ...Avocado
   }
 }
