@@ -1,10 +1,8 @@
 import React from 'react'
 import { Header, Divider, Table } from 'semantic-ui-react'
+import type { Attributes } from '@service/graphql'
 
-const ProductAttributes = ({
-  description,
-  ...otherAttributes
-}: TProductAttributes) => (
+const ProductAttributes = ({ description, ...otherAttributes }: Attributes) => (
   <section className="container">
     <Header as="h3">About this avocado</Header>
     <p>{description}</p>

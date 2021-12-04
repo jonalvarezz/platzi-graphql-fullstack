@@ -1,11 +1,13 @@
-import React from 'react'
+import Image from 'next/image'
 import { Item, Label } from 'semantic-ui-react'
 
+import { getImgUrl } from '@service/assets'
+import type { AvocadoFragment } from '@service/graphql'
 import AddToCart from './AddToCart'
 import ProductAttributes from './ProductAttributes'
 
 type ProductSummaryProps = {
-  product: TProduct
+  product: AvocadoFragment
 }
 
 const ProductSummary = ({ product }: ProductSummaryProps) => (
@@ -13,7 +15,12 @@ const ProductSummary = ({ product }: ProductSummaryProps) => (
     <Item.Group as="section">
       <Item style={{ alignItems: 'center' }}>
         <Item.Image size="medium">
-          <img src={product.image} alt={product.name} />
+          <Image
+            src={getImgUrl(product.image)}
+            width={333}
+            height={333}
+            alt={product.name}
+          />
         </Item.Image>
         <Item.Content>
           <Item.Header as="h1">{product.name}</Item.Header>

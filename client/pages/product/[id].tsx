@@ -1,40 +1,64 @@
 import React from 'react'
-import type { GetStaticPaths, GetStaticProps } from 'next'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next'
+
+import client from '@service/client'
+import { GetAllAvocadosDocument, GetAvocadoDocument } from '@service/graphql'
+import type { AvocadoFragment } from '@service/graphql'
 
 import Layout from '@components/Layout/Layout'
 import ProductSummary from '@components/ProductSummary/ProductSummary'
 
-// TODO: Use the graphQL API from https://platzi.com/cursos/nodejs-graphql
 export const getStaticPaths: GetStaticPaths = async () => {
-  const response = await fetch('my-graphql-url-endpoint')
-  const { data }: TAPIAvoResponse = await response.json()
+  const response = await client.query({ query: GetAllAvocadosDocument })
+  const data = response.data.avos
 
-  const paths = data.map(({ id }) => ({ params: { id } }))
+  const paths = data.map((avo, index) => {
+    if (avo == null) {
+      throw new Error(
+        `An avocado entry with no data was found at index ${index}`
+      )
+    }
+
+    return { params: { id: avo.id } }
+  })
 
   return {
-    // Statically generate all paths
     paths,
-    // Display 404 for everything else
     fallback: false,
   }
 }
 
-// TODO: Use the graphQL API from https://platzi.com/cursos/nodejs-graphql
-// This also gets called at build time
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // params contains the post `id`.
-  // If the route is like /posts/1, then params.id is 1
-  const response = await fetch(`my-graphql-url-endpoint/${params?.id}`)
-  const product = await response.json()
+export const getStaticProps: GetStaticProps<{ product: AvocadoFragment }> =
+  async ({ params }) => {
+    try {
+      const response = await client.query({
+        query: GetAvocadoDocument,
+        variables: { avoId: params?.id as string },
+      })
 
-  // Pass post data to the page via props
-  return { props: { product } }
-}
+      if (response.data.avo == null) {
+        throw new Error(`Item with id ${params?.id} was not found.`)
+      }
 
-const ProductPage = ({ product }: { product: TProduct }) => {
+      // Pass post data to the page via props
+      return { props: { product: response.data.avo } }
+    } catch (e) {
+      return {
+        notFound: true,
+      }
+    }
+  }
+
+const ProductPage = ({
+  product,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout>
-      {product == null ? null : <ProductSummary product={product} />}
+    <Layout title={product.name}>
+      <ProductSummary product={product} />
     </Layout>
   )
 }
