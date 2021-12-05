@@ -24,3 +24,9 @@ query GetAvocado($avoId: ID!) {
     ...Avocado
   }
 }
+
+mutation AddAvocado($data: AvoCreateInput!) {
+  createAvo(data: $data) {
+    ...Avocado
+  }
+}
