@@ -28,7 +28,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    // Pre-renderice las paginas anteriores y para toda nueva página nueva
+    // intente generarla desde el servidor bajo demanda
+    fallback: 'blocking',
   }
 }
 
