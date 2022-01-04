@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <a href="https://platzi.com/cursos/nextjs-graphql/" target="_blank">
+    <img alt="Curso de Next.js con GraphQL" src="https://static.platzi.com/media/achievements/piezas-nextjs-graphql_badge-cbeed361-b95b-439e-a48b-ce024f85384e.png" width="60" />
+  </a>
+</p>
+<h1 align="center">
+Projecto del Curso de Next.js con GraphQL
+</h1>
 
-## Getting Started
+> 👉 TIP: Utiliza la etiqueta git correcta con `git checkout -b NOMBRE_DE_MI_BRANCH NOMBRE_ETIQUETA` para empezar desde el punto que deseas. En [Tags (Etiquetas)](https://github.com/jonalvarezz/platzi-graphql-fullstack/tags) puedes encontrar todas las etiquetas. La descripción de las etiquetas contiene el nombre de la clase a la que corresponde. 
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### 🤖 Guía Rápida
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1.  **Clona el repositorio.**
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+    En caso que no lo hayas hecho ya: 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+    ```sh
+    git clone git@github.com:jonalvarezz/platzi-graphql-fullstack.git
+    cd platzi-graphql-fullstack
+    ```
+    
+1.  **Instala dependencias.**
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    Desde la **raiz** del repositorio:
 
-## Learn More
+    ```sh
+    yarn
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+1.  **Corre el proyecto.**
+    
+    Accede a la carpeta del worshop
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```sh
+    cd /client
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    Inicia el proyecto
 
-## Deploy on Vercel
+    ```sh
+    yarn start
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    El sitio estará disponible en http://localhost:3000
+    
+    > ⚠️ Dependiendo del punto (etiqueta) de donde inicies este proyecto podrías necesitar una o más variables de entorno para que funcione correctamente. Asegúrate de seguir las clases para poder obtenerlas y generarlas. También puedes echar un vistazo en `.env.example`
+    
