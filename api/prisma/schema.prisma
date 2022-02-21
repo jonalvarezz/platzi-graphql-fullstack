@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Avocado {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+
+  name       String
+  sku        String      @unique
+  price      Float
+  image      String
+  attributes Attributes?
+}
+
+model Attributes {
+  id          Int     @id @default(autoincrement())
+  description String?
+  shape       String?
+  hardiness   String?
+  taste       String?
+  avocado     Avocado @relation(fields: [avocadoId], references: [id])
+  avocadoId   Int
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
