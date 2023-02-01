@@ -13,7 +13,7 @@
     "copyfiles": "copyfiles src/schema.graphql views/* public/* ../dist/api"
   },
   "dependencies": {
-    "@prisma/client": "^3.1.1",
+    "@prisma/client": "^4.9.0",
     "apollo-server-core": "^3.3.0",
     "apollo-server-express": "^3.3.0",
     "bcrypt": "^5.0.1",
