@@ -14,29 +14,29 @@
     "copyfiles": "copyfiles src/schema.graphql views/* public/* ../dist/api"
   },
   "dependencies": {
-    "@prisma/client": "^3.1.1",
-    "apollo-server-core": "^3.3.0",
-    "apollo-server-express": "^3.3.0",
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.17.1",
-    "graphql": "^15.6.1",
-    "jose": "^4.3.7",
-    "nodemon": "^2.0.13",
-    "ts-node": "^10.2.1"
+    "@prisma/client": "3.1.1",
+    "apollo-server-core": "3.3.0",
+    "apollo-server-express": "3.3.0",
+    "bcrypt": "5.0.1",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "dotenv": "16.0.3",
+    "express": "4.17.1",
+    "graphql": "15.6.1",
+    "jose": "4.3.7",
+    "nodemon": "2.0.13",
+    "ts-node": "10.2.1"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "@types/jest": "^27.0.x",
-    "copyfiles": "^2.4.1",
-    "easygraphql-tester": "^6.0.1",
-    "graphql-tag": "^2.12.6",
-    "jest": "^27.0.x",
-    "jest-mock-extended": "^2.0.4",
-    "prisma": "^3.1.1",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.7"
+    "@types/bcrypt": "5.0.0",
+    "@types/jest": "27.0.x",
+    "copyfiles": "2.4.1",
+    "easygraphql-tester": "6.0.1",
+    "graphql-tag": "2.12.6",
+    "jest": "27.0.x",
+    "jest-mock-extended": "2.0.4",
+    "prisma": "3.1.1",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.0.7"
   }
 }
