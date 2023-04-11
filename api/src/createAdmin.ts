@@ -1,44 +1,39 @@
+/**
+ * This script creates or updates an admin user in the database based
+ * on the ADMIN_USERNAME and ADMIN_PASSWORD environment variables.
+ *
+ * Check the .env.example file for more information.
+ *
+ * This process is ran in the `npm run migrate:prod` script.
+ */
+import * as dotenv from 'dotenv'
+dotenv.config()
+
 import { PrismaClient } from '@prisma/client'
 import { hash } from 'bcrypt'
-import prompt from 'prompt'
 
 const orm = new PrismaClient()
 
-prompt.start()
+main(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD)
 
-prompt.get(
-  [
-    {
-      name: 'username',
-      pattern: /^[a-zA-Z\s\-]+$/,
-      message: 'Name must be only letters, spaces, or dashes',
-      required: true,
-    },
-    {
-      name: 'password',
-      // @ts-ignore outdated types
-      hidden: true,
-      replace: '*',
-      required: true,
-    },
-  ],
-  async function (err, result) {
-    if (err) {
-      console.warn('Huh. Something went wrong.')
-      return
-    }
-    const username = result.username as string
-    const hashedPassword = await hash(result.password as string, 10)
-
-    const user = await orm.user.upsert({
-      where: { username },
-      update: {},
-      create: {
-        password: hashedPassword,
-        username,
-      },
-    })
-
-    console.log(`User ${user.username} created with id ${user.id}\n`)
+async function main(
+  username: string | undefined,
+  password: string | undefined
+) {
+  if (!username || !password) {
+    throw new Error('Username and password are required')
   }
-)
+
+  const hashedPassword = await hash(password as string, 10)
+
+  const user = await orm.user.upsert({
+    where: { username },
+    update: {},
+    create: {
+      password: hashedPassword,
+      username,
+    },
+  })
+
+  console.log(`User ${user.username} created with id ${user.id}\n`)
+}
