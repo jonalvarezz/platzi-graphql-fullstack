@@ -34,6 +34,7 @@
   },
   "peerDependencies": {
     "eslint": "*",
+    "graphql": "*",
     "typescript": "*"
   }
 }
