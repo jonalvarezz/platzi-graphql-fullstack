@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['platzi-graphql.herokuapp.com', 'localhost'],
+    domains: ['platzi-graphql-api.onrender.com', 'localhost'],
   },
 }
