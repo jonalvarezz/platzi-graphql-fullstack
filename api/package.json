@@ -14,7 +14,7 @@
     "copyfiles": "copyfiles src/schema.graphql views/* public/* ../dist/api"
   },
   "dependencies": {
-    "@prisma/client": "^3.1.1",
+    "@prisma/client": "3.15.2",
     "apollo-server-core": "^3.3.0",
     "apollo-server-express": "^3.3.0",
     "bcrypt": "^5.0.1",
@@ -35,7 +35,7 @@
     "graphql-tag": "^2.12.6",
     "jest": "^27.0.x",
     "jest-mock-extended": "^2.0.4",
-    "prisma": "^3.1.1",
+    "prisma": "3.15.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7"
   }
