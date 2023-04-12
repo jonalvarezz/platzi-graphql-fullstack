@@ -18,5 +18,6 @@ jobs:
           node-version: '14.x'
 
       - run: |
-          yarn install --production=false
+          yarn
+          yarn build
           yarn --cwd api test
