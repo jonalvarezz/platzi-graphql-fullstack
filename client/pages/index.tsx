@@ -1,9 +1,57 @@
-import React from 'react'
+import {useState, useEffect} from 'react'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'
 
+const query = `
+  query{
+    products{
+      id
+      title
+      price
+    }
+  }
+`
+
+const requester = (endpoint?: string, data?: Record<string, number | string>) =>
+  fetch(`https://api.escuelajs.co${endpoint}`,{
+      method:'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+  })
+
+const useAvocados = () => {
+  const [data, setData] = useState<TProduct[]>([])
+  const [status, setStatus] = useState<'success'| 'loading' | 'error' | 'idle'>('idle')
+
+  useEffect(()=>{
+    const fetchItems = async () => {
+      setStatus('loading')
+      try {
+        const response = await requester('/graphql', { query })
+
+        const { data } = (await response.json()) as { data: TProduct[]}
+        setData(data)
+        setStatus('success')
+      } catch (error) {
+        setStatus('error')
+      }
+    }
+    fetchItems()
+  }, [])
+
+  return {
+    data,
+    status
+  }
+
+}
+
 const HomePage = () => {
+  const {data, status} = useAvocados()
+
   return (
     <Layout title="Home">
       <KawaiiHeader />
