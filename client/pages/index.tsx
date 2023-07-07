@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'

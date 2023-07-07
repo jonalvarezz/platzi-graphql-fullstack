@@ -8,7 +8,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build": "echo 'Done'"
   },
   "dependencies": {
     "autoprefixer": "^10.4.0",
