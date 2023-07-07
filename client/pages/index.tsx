@@ -1,7 +1,9 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '@components/Layout/Layout'
 import { Card } from 'semantic-ui-react'
 import KawaiiHeader from '@components/KawaiiHeader/KawaiiHeader'
+import axios from 'axios'
+import { useQuery } from 'react-query'
 
 const query = `
   query{
@@ -13,44 +15,53 @@ const query = `
   }
 `
 
-const requester = (endpoint?: string, data?: Record<string, number | string>) =>
-  fetch(`https://api.escuelajs.co${endpoint}`,{
-      method:'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(data)
-  })
-
-const useAvocados = () => {
-  const [data, setData] = useState<TProduct[]>([])
-  const [status, setStatus] = useState<'success'| 'loading' | 'error' | 'idle'>('idle')
-
-  useEffect(()=>{
-    const fetchItems = async () => {
-      setStatus('loading')
-      try {
-        const response = await requester('/graphql', { query })
-
-        const { data } = (await response.json()) as { data: TProduct[]}
-        setData(data)
-        setStatus('success')
-      } catch (error) {
-        setStatus('error')
-      }
+const queryProduct = `
+  query{
+    product(id: 48){
+      id
+      title
+      price
+      description
+      images
+      creationAt
+      updatedAt
     }
-    fetchItems()
-  }, [])
-
-  return {
-    data,
-    status
   }
+`
 
+const baseURL =
+  process.env.NEXT_PUBLIC_SERVICE_URL || 'https://api.escuelajs.co'
+
+const requester = axios.create({
+  baseURL,
+  headers: {
+    'content-type': 'application/json',
+  },
+})
+
+const useProduct = () => {
+  return useQuery('product', async () => {
+    const response = await requester.post<{ data: TProduct[] }>('/graphql', {
+      query: queryProduct,
+    })
+
+    return response.data.data
+  })
+}
+
+const useProducts = () => {
+  return useQuery('products', async () => {
+    const response = await requester.post<{ data: TProduct[] }>('/graphql', {
+      query,
+    })
+
+    return response.data.data
+  })
 }
 
 const HomePage = () => {
-  const {data, status} = useAvocados()
+  const { data, status } = useProducts()
+  const { data2, status2 } = useProduct()
 
   return (
     <Layout title="Home">
